@@ -27,7 +27,7 @@
       "uri": "http://blog.majcica.com/"
     },
     "support": {
-      "uri": "http://blog.majcica.com/2017/12/01/using-windows-machine-file-copy-winrm-vsts-extension"
+      "uri": "http://blog.majcica.com/2018/02/12/automate-settings-retain-indefinitely-flag-on-your-releases"
     },
     "repository": {
         "uri": "https://github.com/mmajcica/retain-release"
@@ -46,7 +46,7 @@
   },
   "screenshots": [
     {
-        "path": "images/copy-files-winrm.png"
+        "path": "images/retain-release.png"
     }
   ],
   "content": {
