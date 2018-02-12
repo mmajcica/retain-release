@@ -1,0 +1,22 @@
+{
+  "name": "retain-release",
+  "version": "0.0.0",
+  "description": "Retain indefinitely current release",
+  "homepage": "http://blog.majcica.com/",
+  "author": {
+    "name": "mmajcica"
+  },
+  "files": [],
+  "main": "",
+  "keywords": [],
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-util": "^3.0.7",
+    "shelljs": "^0.7.0"
+  }
+}

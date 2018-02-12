@@ -1,0 +1,83 @@
+{
+  "manifestVersion": 1,
+  "extensionId": "retain-release",
+  "name": "Retain indefinitely current release",
+  "version": "1.0.0",
+  "publisher": "mmajcica",
+  "description": "Retain indefinitely current release",
+  "public": false,
+  "galleryFlags": [
+    "Public"
+  ],
+  "icons": {
+    "default": "images/logo.png",
+    "large": "images/logo-large.png"
+  },
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "retain",
+    "retain indefinitely",
+    "indefinitely",
+    "release"
+  ],
+  "links": {
+    "home": {
+      "uri": "http://blog.majcica.com/"
+    },
+    "support": {
+      "uri": "http://blog.majcica.com/2017/12/01/using-windows-machine-file-copy-winrm-vsts-extension"
+    },
+    "repository": {
+        "uri": "https://github.com/mmajcica/retain-release"
+    },
+    "issues": {
+        "uri": "https://github.com/mmajcica/retain-release/issues"
+    }
+  },
+  "repository": {
+      "type": "git",
+      "uri": "https://github.com/mmajcica/retain-release"
+  },
+  "branding": {
+    "color": "#e9ebed",
+    "theme": "light"
+  },
+  "screenshots": [
+    {
+        "path": "images/copy-files-winrm.png"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "README.md"
+    }
+  },
+  "files": [
+    {
+      "path": "images",
+      "addressable": true
+    },
+    {
+      "path": "retain-release"
+    }
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "retain-release",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "retain-release"
+      }
+    }
+  ]
+}
