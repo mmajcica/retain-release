@@ -1,6 +1,6 @@
 {
   "id": "d96e8c90-0fdd-11e8-a8b1-79ecfcf1be7c",
-  "name": "retain-release",
+  "name": "retainRelease",
   "friendlyName": "Retain indefinitely current release",
   "description": "This task will allow you to mark the current release to be retained indefinitely",
   "author": "Mario Majcica",
@@ -11,11 +11,11 @@
   ],
   "demands": [],
   "version": {
-    "Major": "1",
+    "Major": "2",
     "Minor": "1",
     "Patch": "0"
   },
-  "minimumAgentVersion": "1.95.0",
+  "minimumAgentVersion": "1.95.1",
   "instanceNameFormat": "Retain indefinitely current release",
   "inputs": [
     {
@@ -26,8 +26,8 @@
     }
   ],
   "execution": {
-    "PowerShell3": {
-      "target": "task.ps1"
+    "Node": {
+      "target": "task.js"
     }
   }
 }

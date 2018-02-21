@@ -1,138 +1,156 @@
-'use strict';
-
-var fs = require('fs');
-var path = require('path');
-var del = require('del');
-var eslint = require('gulp-eslint');
 var gulp = require('gulp');
-var istanbul = require('gulp-istanbul');
-var mocha = require('gulp-mocha');
-var plumber = require('gulp-plumber');
-var shell = require('shelljs');
-var spawn = require('child_process').spawn;
+var debug = require('gulp-debug');
 var gutil = require('gulp-util');
+var ts = require("gulp-typescript");
+var path = require('path');
+var shell = require('shelljs');
+var minimist = require('minimist');
+var semver = require('semver');
+var fs = require('fs');
+var del = require('del');
+var merge = require('merge-stream');
+var cp = require('child_process');
 
-var copyNodeModulesToTasks = function (done) {
-  fs.readdirSync('src').forEach(function (file) {
-    var filePath = path.join('dist', 'src', file);
-    if (fs.statSync(filePath).isDirectory()) {
-      try {
-        if (fs.statSync(path.join(filePath, 'task.json')).isFile()) {
-          shell.cp('-rf', 'dist/node_modules', filePath);
+var _buildRoot = path.join(__dirname, '_build');
+var _packagesRoot = path.join(__dirname, '_packages');
+
+function errorHandler(err) {
+    process.exit(1);
+}
+
+gulp.task('default', ['build']);
+
+gulp.task('build', ['clean', 'compile'], function () {
+    var extension = gulp.src(['README.md', 'LICENSE.txt', 'images/**/*', '!images/**/*.pdn', 'vss-extension.json'], { base: '.' })
+        .pipe(debug({title: 'extension:'}))
+        .pipe(gulp.dest(_buildRoot));
+    var task = gulp.src(['task/**/*', '!task/**/*.ts'], { base: '.' })
+        .pipe(debug({title: 'task:'}))
+        .pipe(gulp.dest(_buildRoot));
+
+    getExternalModules();
+    
+    return merge(extension, task);
+});
+
+gulp.task('clean', function() {
+   return del([_buildRoot]);
+});
+
+gulp.task('compile', ['clean'], function() {
+    var taskPath = path.join(__dirname, 'task', '*.ts');
+    var tsConfigPath = path.join(__dirname, 'tsconfig.json');
+
+    return gulp.src([taskPath], { base: './task' })
+        .pipe(ts.createProject(tsConfigPath)())
+        .on('error', errorHandler)
+        .pipe(gulp.dest(path.join(_buildRoot, 'task')));
+});
+
+gulp.task('package', ['build'], function() {
+    var args = minimist(process.argv.slice(2), {});
+    var options = {
+        version: args.version,
+        stage: args.stage,
+        public: args.public,
+        taskId: args.taskId
+    }
+
+    if (options.version) {
+        if (options.version === 'auto') {
+            var ref = new Date(2000, 1, 1);
+            var now = new Date();
+            var major = 1
+            var minor = Math.floor((now - ref) / 86400000);
+            var patch = Math.floor(Math.floor(now.getSeconds() + (60 * (now.getMinutes() + (60 * now.getHours())))) * 0.5)
+            options.version = major + '.' + minor + '.' + patch
         }
-      } catch (e) {
-        /* swallow error: not a task directory */
-      }
+        
+        if (!semver.valid(options.version)) {
+            throw new gutil.PluginError('package', 'Invalid semver version: ' + options.version);
+        }
     }
-  });
-  done();
-};
-
-var executeCommand = function (cmd, dir, done) {
-  gutil.log('Running command: ' + cmd);
-  var pwd = shell.pwd();
-  if (undefined !== dir) {
-    gutil.log(' Working directory: ' + dir);
-    shell.cd(dir);
-  }
-  shell.exec(cmd, {silent: true}, function (code, stdout, stderr) {
-    gutil.log(' stdout: ' + stdout);
-    if (code !== 0) {
-      gutil.log('Command failed: ' + cmd + '\nManually execute to debug');
-      gutil.log(' stderr: ' + stderr);
+    
+    switch (options.stage) {
+        case 'dev':
+            options.taskId = '0664FF86-F509-4392-A33C-B2D9239B9AE5';
+            options.public = false;
+            break;
     }
-    shell.cd(pwd);
-    done();
-  });
-};
-
-var createVsixPackage = function (done) {
-  if (!shell.which('tfx')) {
-    gutil.log('Packaging requires tfx cli. Please install with `npm install tfx-cli -g`.');
-    done();
-    return;
-  }
-  var packagingCmd = 'tfx extension create --manifest-globs vss-extension.json --root dist/src --output-path dist';
-  executeCommand(packagingCmd, shell.pwd(), done);
-};
-
-var getNodeDependencies = function (done) {
-  gutil.log('Copy package.json to dist directory');
-  shell.mkdir('-p', 'dist/node_modules');
-  shell.cp('-f', 'package.json', 'dist');
-
-  gutil.log('Fetch node modules to package with tasks');
-  var npmPath = shell.which('npm');
-  var npmInstallCommand = '"' + npmPath + '" install --production';
-  executeCommand(npmInstallCommand, 'dist', done);
-};
-
-// Tasks
-gulp.task('clean', function (done) {
-  del('dist').then(function () {
-    done();
-  });
+    
+    //updateExtensionManifest(options);
+    //updateTaskManifest(options);
+    
+    shell.exec('tfx extension create --root "' + _buildRoot + '" --output-path "' + _packagesRoot +'"')
 });
 
-gulp.task('lint', ['clean'], function () {
-  return gulp.src('**/*.js')
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-});
+getExternalModules = function() {
+    // copy package.json without dev dependencies
+    var libPath = path.join(_buildRoot, 'task');
 
-gulp.task('build', ['lint'], function () {
-  return gulp.src('src/**/*', {base: '.'})
-    .pipe(gulp.dest('dist'));
-});
+    var pkg = require('./package.json');
+    delete pkg.devDependencies;
 
-gulp.task('pre-test', ['build'], function () {
-  return gulp.src('src/**/*.js')
-    .pipe(istanbul({includeUntested: true}))
-    .pipe(istanbul.hookRequire());
-});
+    fs.writeFileSync(path.join(libPath, 'package.json'), JSON.stringify(pkg, null, 4));
 
-gulp.task('test', ['mocha-test']);
+    // install modules
+    var npmPath = shell.which('npm');
 
-gulp.task('mocha-test', ['pre-test'], function (done) {
-  var mochaErr;
+    shell.pushd(libPath);
+    {
+        var cmdline = '"' + npmPath + '" install';
+        var res = cp.execSync(cmdline);
+        gutil.log(res.toString());
 
-  gulp.src('test/**/*.js')
-    .pipe(plumber())
-    .pipe(mocha({reporter: 'spec'}))
-    .on('error', function (err) {
-      mochaErr = err;
-    })
-    .pipe(istanbul.writeReports())
-    .on('end', function () {
-      done(mochaErr);
-    });
-});
-
-gulp.task('pester-test', ['pre-test'], function (done) {
-  // Runs powershell unit tests based on pester
-  var pester = spawn('powershell.exe', ['-Command', 'Invoke-Pester -EnableExit -Path test'], {stdio: 'inherit'});
-  pester.on('exit', function (code) {
-    if (code === 0) {
-      done();
-    } else {
-      done('Pester tests failed!');
+        shell.popd();
     }
-  });
 
-  pester.on('error', function () {
-    // We may be in a non-windows machine or powershell.exe is not in path. Skip pester tests.
-    done();
-  });
-});
+    fs.unlinkSync(path.join(libPath, 'package.json'));
+}
 
-gulp.task('default', ['test']);
+updateExtensionManifest = function(options) {
+    var manifestPath = path.join(_buildRoot, 'vss-extension.json')
+    var manifest = JSON.parse(fs.readFileSync(manifestPath));
+    
+    if (options.version) {
+        manifest.version = options.version;
+    }
+    
+    if (options.stage) {
+        manifest.id = manifest.id + '-' + options.stage
+        manifest.name = manifest.name + ' (' + options.stage + ')'
+    }
 
-gulp.task('package', ['test'], function (done) {
-  getNodeDependencies(function () {
-    // TODO We need a per task dependency copy
-    copyNodeModulesToTasks(function () {
-      createVsixPackage(done);
-    });
-  });
-});
+    manifest.public = options.public;
+    
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
+}
+
+updateTaskManifest = function(options) {
+    var manifestPath = path.join(_buildRoot, 'task', 'task.json')
+    var manifest = JSON.parse(fs.readFileSync(manifestPath));
+    
+    if (options.version) {
+        manifest.version.Major = semver.major(options.version);
+        manifest.version.Minor = semver.minor(options.version);
+        manifest.version.Patch = semver.patch(options.version);
+    }
+
+    manifest.helpMarkDown = 'v' + manifest.version.Major + '.' + manifest.version.Minor + '.' + manifest.version.Patch + ' - ' + manifest.helpMarkDown;
+    
+    if (options.stage) {
+        manifest.friendlyName = manifest.friendlyName + ' (' + options.stage
+
+        if (options.version) {
+            manifest.friendlyName = manifest.friendlyName + ' ' + options.version
+        }
+
+        manifest.friendlyName = manifest.friendlyName + ')'
+    }
+    
+    if (options.taskId) {
+        manifest.id = options.taskId
+    }
+    
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 4));
+}

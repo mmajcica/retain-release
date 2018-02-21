@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "extensionId": "retain-release",
   "name": "Retain indefinitely current release",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "publisher": "mmajcica",
   "description": "Retain indefinitely current release",
   "public": false,
@@ -60,7 +60,7 @@
       "addressable": true
     },
     {
-      "path": "retain-release"
+      "path": "task"
     }
   ],
   "targets": [
@@ -70,13 +70,13 @@
   ],
   "contributions": [
     {
-      "id": "retain-release",
+      "id": "retain-release-task",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "retain-release"
+        "name": "task"
       }
     }
   ]

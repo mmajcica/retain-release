@@ -1,25 +1,23 @@
 {
-  "name": "qetza.vsts-replacetokens-task",
+  "name": "mmajcica.vretain-release",
   "version": "0.1.0",
-  "description": "Build task for VS Team Services that can run replace tokens in files.",
-  "author": "Guillaume Rouchon",
+  "description": "Release task for VS Team Services that can run set or unset the retain release indefintly.",
+  "author": "Mario Majcica",
   "license": "MIT",
-  "homepage": "https://github.com/qetza/vsts-replacetokens-task#readme",
+  "homepage": "https://github.com/mmajcica/retain-release",
   "bugs": {
-    "url": "https://github.com/qetza/vsts-replacetokens-task/issues"
+    "url": "https://github.com/mmajcica/retain-release/issues"
   },
   "keywords": [
     "VSTS",
+    "TFS",
     "release",
-    "build",
-    "token",
-    "replace",
-    "variable",
-    "substitution"
+    "retain",
+    "indefinitely"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qetza/vsts-replacetokens-task.git"
+    "url": "git+https://github.com/mmajcica/retain-release.git"
   },
   "devDependencies": {
     "@types/iconv-lite": "0.0.1",
