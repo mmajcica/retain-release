@@ -1,5 +1,7 @@
 # Retain indefinitely current release
-### Overview
+
+## Overview
+
 As a common practice, after a successful release to production, often there is a need retain the involved artifact and relevant release information for certain amount of time. In order to avoid that a retention policy removes this information, you will mark that release with a Retain indefinitely flag, by choosing that option from the VSTS UI.
 As this is a manual process, with this task I'm trying to automate this, in a form of task that can be used in your release, to set the Retain indefinitely flag for the running release.
 
@@ -19,6 +21,11 @@ Make sure 'Manage Releases' permission is granted for the indicated user.
 ### Parameters
 
 Only a single parameter is presented by the task in a form of a checkbox labeled **Mark the current release to be retained indefinitely**. By default is set to true. If checked, it will mark the current release with Retain indefinitely flag. Otherwise it will take the Retain indefinitely flag off the current release.
+
+## Release notes
+
+* 2.0.4 - Node Js hanlder implementation [#1](https://github.com/mmajcica/retain-release/issues/1)
+* 1.1.x - Initial implementation based on PS3 handler
 
 ## Contributing
 
