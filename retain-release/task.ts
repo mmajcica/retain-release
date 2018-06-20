@@ -5,16 +5,19 @@ import { IReleaseApi } from 'vso-node-api/ReleaseApi';
 
 async function run() {
     try {
-        let lock: boolean = task.getBoolInput('lock', true);
+        const lock: boolean = task.getBoolInput('lock', true);
 
-        let serverUrl: string = task.getVariable("System.TeamFoundationCollectionUri");
-        let project: string = task.getVariable("System.TeamProject");
-        let releaseId: number = +task.getVariable("Release.ReleaseId");
+        const serverUrl: string = task.getVariable("System.TeamFoundationCollectionUri");
+        const project: string = task.getVariable("System.TeamProject");
+        const releaseId: number = +task.getVariable("Release.ReleaseId");
 
-        let pat: string = task.getEndpointAuthorizationParameter("SYSTEMVSSCONNECTION", "AccessToken", false)
-        let authHandler = api.getPersonalAccessTokenHandler(pat);
+        const pat: string = task.getEndpointAuthorizationParameter("SYSTEMVSSCONNECTION", "AccessToken", false)
+        const authHandler = api.getPersonalAccessTokenHandler(pat);
 
-        let vsts: api.WebApi = new api.WebApi(serverUrl, authHandler);
+        const proxy = task.getHttpProxyConfiguration();
+        const options = proxy ? { proxy, ignoreSslError: true } : undefined;
+        
+        let vsts: api.WebApi = new api.WebApi(serverUrl, authHandler, options);
         let vstsRelease: IReleaseApi  = await vsts.getReleaseApi()
 
         let metatdata: ReleaseUpdateMetadata = <ReleaseUpdateMetadata>{ keepForever: lock }
