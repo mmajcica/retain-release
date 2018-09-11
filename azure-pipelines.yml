@@ -16,10 +16,11 @@ steps:
     npm install
     gulp package
   displayName: 'npm install and run gulp'
+  workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
       **\*.vsix
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
