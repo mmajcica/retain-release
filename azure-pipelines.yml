@@ -14,7 +14,7 @@ steps:
 
 - script: |
     npm install
-    npm install tfx-cli
+    npm install -g tfx-cli
   displayName: 'npm install'
   workingDirectory: '$(Build.SourcesDirectory)'
 
