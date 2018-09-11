@@ -19,6 +19,11 @@ steps:
   workingDirectory: '$(Build.SourcesDirectory)'
 
 - script: |
+    npm install -g tfx-cli
+  displayName: 'install tfx-cli'
+  workingDirectory: '$(Build.SourcesDirectory)'
+  
+- script: |
     gulp package
   displayName: 'gulp package'
   workingDirectory: '$(Build.SourcesDirectory)'
