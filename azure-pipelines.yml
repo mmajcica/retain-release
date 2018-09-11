@@ -14,7 +14,7 @@ steps:
 
 - script: |
     npm install
-    gulp package --gulpfile gulpfile.js
+    gulp package
   displayName: 'npm install and run gulp'
 
 - task: CopyFiles@2
