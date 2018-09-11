@@ -14,8 +14,12 @@ steps:
 
 - script: |
     npm install
+  displayName: 'npm install'
+  workingDirectory: '$(Build.SourcesDirectory)'
+
+- script: |
     gulp package
-  displayName: 'npm install and run gulp'
+  displayName: 'gulp package'
   workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: CopyFiles@2
