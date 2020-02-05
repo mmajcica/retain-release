@@ -14,8 +14,9 @@ async function run() {
         const hostType: string = task.getVariable("System.HostType");
 
         const pat: string = task.getEndpointAuthorizationParameter("SYSTEMVSSCONNECTION", "AccessToken", false);
+        const proxy = task.getHttpProxyConfiguration();
         const authHandler = api.getPersonalAccessTokenHandler(pat);
-        const vsts: api.WebApi = new api.WebApi(serverUrl, authHandler);
+        const vsts: api.WebApi = new api.WebApi(serverUrl, authHandler, { proxy });
 
         if (hostType === 'build') {
             task.debug('Detected execution context is build.');
