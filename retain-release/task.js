@@ -19,8 +19,10 @@ function run() {
             const project = task.getVariable("System.TeamProject");
             const hostType = task.getVariable("System.HostType");
             const pat = task.getEndpointAuthorizationParameter("SYSTEMVSSCONNECTION", "AccessToken", false);
+            const proxy = task.getHttpProxyConfiguration();
+            const cert = task.getHttpCertConfiguration();
             const authHandler = api.getPersonalAccessTokenHandler(pat);
-            const vsts = new api.WebApi(serverUrl, authHandler);
+            const vsts = new api.WebApi(serverUrl, authHandler, { proxy, cert });
             if (hostType === 'build') {
                 task.debug('Detected execution context is build.');
                 const buildId = +task.getVariable("Build.BuildId");

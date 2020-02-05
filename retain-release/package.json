@@ -1,5 +1,5 @@
 {
-  "name": "mmajcica.retain-release",
+  "name": "mmajcica.retain-release-task",
   "version": "0.1.0",
   "description": "Release task for VS Team Services that can run set or unset the retain release indefinitely.",
   "author": "Mario Majcica",
@@ -7,10 +7,6 @@
   "homepage": "https://github.com/mmajcica/retain-release",
   "bugs": {
     "url": "https://github.com/mmajcica/retain-release/issues"
-  },
-  "scripts": {
-    "prepackage": "cd ./retain-release && npm i --no-package-lock && tsc",
-    "package": "tfx extension create --rev-version --output-path ./.packages --no-prompt --json"
   },
   "keywords": [
     "Azure DevOps",
@@ -26,7 +22,8 @@
     "type": "git",
     "url": "git+https://github.com/mmajcica/retain-release.git"
   },
-  "devDependencies": {
-    "@types/node": "^13.7.0"
+  "dependencies": {
+    "azure-devops-node-api": "^10.0.0",
+    "azure-pipelines-task-lib": "^2.9.3"
   }
 }
