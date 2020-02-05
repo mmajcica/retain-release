@@ -22,9 +22,14 @@ Make sure 'Manage Releases' permission is granted for the indicated user.
 
 Only a single parameter is presented by the task in a form of a checkbox labeled **Mark the current release to be retained indefinitely**. By default is set to true. If checked, it will mark the current release with Retain indefinitely flag. Otherwise it will take the Retain indefinitely flag off the current release.
 
+## Remarks
+
+From the major version 3 is now possible to use the task in your YAML pipeline definition to set the retention over your multistage pipeline.
+
 ## Release notes
 
-* 2.0.4 - Node Js hanlder implementation [#1](https://github.com/mmajcica/retain-release/issues/1)
+* 3.0.0 - Added support for multistage pipelines (builds). Updated libraries. [#1](https://github.com/mmajcica/retain-release/issues/1)
+* 2.0.4 - Node Js handler implementation [#1](https://github.com/mmajcica/retain-release/issues/1)
 * 1.1.x - Initial implementation based on PS3 handler
 
 ## Contributing

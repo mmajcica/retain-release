@@ -7,3 +7,4 @@ typings/*
 task/*.js
 .taskkey
 package-lock.json
+.packages

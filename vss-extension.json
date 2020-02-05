@@ -1,11 +1,11 @@
 {
   "manifestVersion": 1,
   "extensionId": "retain-release",
-  "name": "Retain indefinitely current release",
-  "version": "2.0.5",
+  "name": "Retention set",
+  "version": "2.1.2",
   "publisher": "mmajcica",
-  "description": "Retain indefinitely current release",
-  "public": false,
+  "description": "Retain indefinitely current build/release",
+  "public": true,
   "galleryFlags": [
     "Public"
   ],
@@ -20,6 +20,9 @@
     "retain",
     "retain indefinitely",
     "indefinitely",
+    "multistage",
+    "pipelines",
+    "retention",
     "release"
   ],
   "links": {
@@ -30,15 +33,15 @@
       "uri": "http://blog.majcica.com/2018/02/12/automate-settings-retain-indefinitely-flag-on-your-releases"
     },
     "repository": {
-        "uri": "https://github.com/mmajcica/retain-release"
+      "uri": "https://github.com/mmajcica/retain-release"
     },
     "issues": {
-        "uri": "https://github.com/mmajcica/retain-release/issues"
+      "uri": "https://github.com/mmajcica/retain-release/issues"
     }
   },
   "repository": {
-      "type": "git",
-      "uri": "https://github.com/mmajcica/retain-release"
+    "type": "git",
+    "uri": "https://github.com/mmajcica/retain-release"
   },
   "branding": {
     "color": "#e9ebed",
@@ -46,15 +49,15 @@
   },
   "screenshots": [
     {
-        "path": "images/retain-release.png"
+      "path": "images/retain-release.png"
     }
   ],
   "content": {
     "details": {
-        "path": "README.md"
+      "path": "README.md"
     },
     "license": {
-        "path": "LICENSE.txt"
+      "path": "LICENSE.txt"
     }
   },
   "files": [
