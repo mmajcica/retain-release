@@ -16,6 +16,10 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    npm i typescript@latest -g
+  displayName: 'install typescript'
+
+- script: |
     npm run prepackage
   displayName: 'npm build'
 
