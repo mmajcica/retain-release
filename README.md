@@ -1,5 +1,7 @@
 # Retain indefinitely current release
 
+![Build Status](https://dev.azure.com/mummy/retain-release/_apis/build/status/mmajcica.retain-release?branchName=master)
+
 ## Overview
 
 As a common practice, after a successful release to production, often there is a need retain the involved artifact and relevant release information for certain amount of time. In order to avoid that a retention policy removes this information, you will mark that release with a Retain indefinitely flag, by choosing that option from the VSTS UI.
