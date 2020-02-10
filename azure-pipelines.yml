@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm build
-  displayName: 'npm build'
+  displayName: 'npm run build'
 
 - task: TfxInstaller@2
   inputs:
