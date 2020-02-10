@@ -1,6 +1,6 @@
 # Retain indefinitely current release
 
-![Build Status](https://dev.azure.com/mummy/retain-release/_apis/build/status/mmajcica.retain-release?branchName=master)
+[![Build Status](https://dev.azure.com/mummy/retain-release/_apis/build/status/mmajcica.retain-release?branchName=master)](https://dev.azure.com/mummy/retain-release/_build/latest?definitionId=41&branchName=master)
 
 ## Overview
 
