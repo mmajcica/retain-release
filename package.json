@@ -9,7 +9,8 @@
     "url": "https://github.com/mmajcica/retain-release/issues"
   },
   "scripts": {
-    "prepackage": "cd ./retain-release && npm i --no-package-lock && tsc",
+    "prebuild": "npm i && cd ./retain-release && npm i --no-package-lock",
+    "build": "./node_modules/.bin/tsc",
     "package": "tfx extension create --rev-version --output-path ./.packages --no-prompt --json"
   },
   "keywords": [
@@ -27,6 +28,7 @@
     "url": "git+https://github.com/mmajcica/retain-release.git"
   },
   "devDependencies": {
-    "@types/node": "^13.7.0"
+    "@types/node": "^13.7.0",
+    "typescript": "^3.7.5"
   }
 }
