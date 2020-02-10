@@ -16,8 +16,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm build
-  displayName: 'npm run build'
+    npm run build
+  displayName: 'npm build'
 
 - task: TfxInstaller@2
   inputs:
