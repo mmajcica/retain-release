@@ -16,11 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm i typescript@latest -g
-  displayName: 'install typescript'
-
-- script: |
-    npm run prepackage
+    npm build
   displayName: 'npm build'
 
 - task: TfxInstaller@2
