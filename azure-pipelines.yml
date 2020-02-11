@@ -28,12 +28,12 @@ stages:
     - task: PackageAzureDevOpsExtension@2
       inputs:
         rootFolder: 
-        outputPath: '$(Build.ArtifactStagingDirectory)/Extension'
+        outputPath: '$(Pipeline.Workspace)/Extension'
         updateTasksVersion: false
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
+        targetPath: '$(Pipeline.Workspace)/Extension'
         artifact: 'extension'
         publishLocation: 'pipeline'
 
