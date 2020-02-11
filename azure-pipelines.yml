@@ -59,7 +59,7 @@ stages:
         connectTo: 'VsTeam'
         connectedServiceName: 'VS Marketplace'
         fileType: 'vsix'
-        vsixFile: '$((Pipeline.Workspace)/extension/*.vsix'
+        vsixFile: '$(Pipeline.Workspace)/extension/*.vsix'
         extensionTag: '-test'
         updateTasksVersion: false
         extensionVisibility: 'private'
