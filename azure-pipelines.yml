@@ -10,7 +10,7 @@ stages:
   - job: Build
     pool:
       vmImage: 'Ubuntu-16.04'
-    continueOnError: true
+    continueOnError: false
     steps:
     - task: NodeTool@0
       inputs:
@@ -31,8 +31,46 @@ stages:
         outputPath: '$(Build.ArtifactStagingDirectory)/Extension'
         updateTasksVersion: false
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/Extension'
-        ArtifactName: 'extension'
-        publishLocation: 'Container'
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'extension'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: false
+    steps:
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        targetPath: '$(Pipeline.Workspace)'
+
+    - task: TfxInstaller@2
+      inputs:
+        version: 'v0.6.x'
+
+    - task: PublishAzureDevOpsExtension@2
+      inputs:
+        connectTo: 'VsTeam'
+        connectedServiceName: 'VS Marketplace'
+        fileType: 'vsix'
+        vsixFile: '$((Pipeline.Workspace)/extension/*.vsix'
+        extensionTag: '-test'
+        updateTasksVersion: false
+        extensionVisibility: 'private'
+        shareWith: 'mummy-test'
+    
+    - task: InstallAzureDevOpsExtension@2
+      inputs:
+        connectTo: 'VsTeam'
+        connectedServiceName: 'VS Marketplace'
+        method: 'id'
+        publisherId: 'mmajcica'
+        extensionId: 'retain-release'
+        extensionTag: '-test'
+        accounts: 'https://dev.azure.com/mummy-test'
