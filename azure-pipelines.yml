@@ -1,36 +1,38 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: true
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'Install Node.js'
 
-- script: |
-    npm run build
-  displayName: 'npm build'
+    - script: |
+        npm run build
+      displayName: 'npm build'
 
-- task: TfxInstaller@2
-  inputs:
-    version: 'v0.6.x'
+    - task: TfxInstaller@2
+      inputs:
+        version: 'v0.6.x'
 
-- task: PackageAzureDevOpsExtension@2
-  inputs:
-    rootFolder: 
-    outputPath: '$(Build.ArtifactStagingDirectory)/Extension'
-    updateTasksVersion: false
+    - task: PackageAzureDevOpsExtension@2
+      inputs:
+        rootFolder: 
+        outputPath: '$(Build.ArtifactStagingDirectory)/Extension'
+        updateTasksVersion: false
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/Extension'
-    ArtifactName: 'extension'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/Extension'
+        ArtifactName: 'extension'
+        publishLocation: 'Container'
