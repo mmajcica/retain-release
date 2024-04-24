@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "extensionId": "retain-release",
   "name": "Retention set",
-  "version": "2.1.5",
+  "version": "2.2.1",
   "publisher": "mmajcica",
   "description": "Retain indefinitely current build/release",
   "public": true,

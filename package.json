@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prebuild": "npm i && cd ./retain-release && npm i --no-package-lock",
-    "build": "./node_modules/.bin/tsc",
+    "build": "npx tsc",
     "package": "tfx extension create --rev-version --output-path ./.packages --no-prompt --json"
   },
   "keywords": [
@@ -28,7 +28,7 @@
     "url": "git+https://github.com/mmajcica/retain-release.git"
   },
   "devDependencies": {
-    "@types/node": "^13.7.0",
-    "typescript": "^3.7.5"
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
   }
 }

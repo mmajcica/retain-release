@@ -23,7 +23,7 @@
     "url": "git+https://github.com/mmajcica/retain-release.git"
   },
   "dependencies": {
-    "azure-devops-node-api": "^10.0.0",
-    "azure-pipelines-task-lib": "^2.9.3"
+    "azure-devops-node-api": "^10.2.2",
+    "azure-pipelines-task-lib": "^2.12.2"
   }
 }

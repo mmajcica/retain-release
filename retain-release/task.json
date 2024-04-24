@@ -27,7 +27,7 @@
     }
   ],
   "execution": {
-    "Node": {
+    "Node16": {
       "target": "task.js"
     }
   }
