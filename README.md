@@ -30,6 +30,7 @@ From the major version 3 is now possible to use the task in your YAML pipeline d
 
 ## Release notes
 
+* 3.1.0 - Moved to Node16 handler and updated dependencies
 * 3.0.0 - Added support for multistage pipelines (builds). Updated libraries. [#1](https://github.com/mmajcica/retain-release/issues/1)
 * 2.0.4 - Node Js handler implementation [#1](https://github.com/mmajcica/retain-release/issues/1)
 * 1.1.x - Initial implementation based on PS3 handler
